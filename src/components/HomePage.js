@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from './Header';
 import '../home.css';
 import BasicSteps from './Steps';
@@ -8,19 +8,99 @@ import fileImg from '../images/File.png';
 
 const HomePage = () => {
     const [file, setFile] = useState(null);
-    const [fileUrl, setFileUrl] = useState(null)
+    const [fileUrl, setFileUrl] = useState(null);
+    const [allPageArray,setAllPageArray] = useState([]);
 
+    const convertPdfToJpeg = (fileUrl)=> {
+        return window.pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
+          const totalPages = pdf.numPages;
+          const conversionResults = []; // Array to store conversion results
+      
+          const promises = [];
+      
+          const convertPageToJpeg = (pageNumber) => {
+            return pdf.getPage(pageNumber).then(page => {
+              return new Promise(resolve => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+      
+                const viewport = page.getViewport({ scale: 1 });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+      
+                const renderContext = {
+                  canvasContext: context,
+                  viewport: viewport,
+                };
+      
+                page.render(renderContext).promise.then(() => {
+                  canvas.toBlob(blob => {
+                    // Create a File object for each page
+                    const fileExtension = 'jpeg'; // You can customize the file extension
+                    const file = new File([blob], `image-${pageNumber}.${fileExtension}`, {
+                      type: `image/${fileExtension}`
+                    });
+      
+                    const fileUrl = URL.createObjectURL(file);
+      
+                    // Create an object containing page information
+                    const pageObj = {
+                      pageNumber,
+                      file,
+                      fileUrl,
+                      fileType: fileExtension,
+                      fileName: `image-${pageNumber}.${fileExtension}`
+                    };
+      
+                    // Push the object to the conversion results array
+                    conversionResults.push(pageObj);
+      
+                    // Resolve the promise
+                    resolve(pageObj);
+                  }, 'image/jpeg');
+                }).catch(error => {
+                  console.error(`Error rendering PDF page ${pageNumber}:`, error);
+                  resolve(null);
+                });
+              });
+            }).catch(error => {
+              console.error(`Error fetching page ${pageNumber}:`, error);
+              return null;
+            });
+          };
+      
+          for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+            promises.push(convertPageToJpeg(pageNumber));
+          }
+      
+          return Promise.all(promises).then(() => {
+            // Now `conversionResults` contains an array of objects with information about each converted page
+            return conversionResults;
+          });
+        });
+      }
+      
     const onChangeFile = (e, identifier) => {
-        if(identifier === "U"){
+        if (identifier === "U") {
             let file = e.target.files[0];
             setFile(file);
-            setFileUrl(URL.createObjectURL(file));
-        }else{
+            const pdfUrl = URL.createObjectURL(file);
+            setFileUrl(pdfUrl);
+        
+            convertPdfToJpeg(pdfUrl).then(result => {
+                setAllPageArray(result);
+            });
+        } else {
             setFileUrl(null);
             setFile(null);
+            setAllPageArray([]);
         }
-        
-    }
+    };
+
+    useEffect(()=>{
+        console.log(allPageArray);
+    },[allPageArray])
+      
 
     return (
         <div className="HomePageMainCon">
