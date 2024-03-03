@@ -36,6 +36,47 @@ const FormatBlock = ({selectedFormat, onPopupFunction}) => {
                         PNG
                     </button>
                 </div>
+        {/* displaying Selected Pages */}
+                <div className="displayingPagesCon">
+                    {/* Each Page */}
+                    <div className="eachPageCon">
+                        <div className="eachPageImgCon">
+
+                        </div>
+                        <div className="eachPageBottomCon">
+                            <span>Page 1</span>
+                            <div className="eachPageBottomRightSideCon">
+                                <button  className="renameBtn" name="rename" value={1} onClick={(e)=>onPopupFunction(e)}>Rename</button>
+                                <button name="edit" className="editAndRemoveIconBtns" value={1} onClick={(e)=>onPopupFunction(e)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                        <path d="M1.75 12.25H12.25M7.1295 3.39967L8.77917 1.75L11.6667 4.6375L10.017 6.28717M7.1295 3.39967L3.85875 6.67042C3.74935 6.77979 3.68787 6.92814 3.68783 7.08283V9.72883H6.33383C6.48853 9.7288 6.63688 9.66732 6.74625 9.55792L10.017 6.28717M7.1295 3.39967L10.017 6.28717" stroke="#9294C6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button name="remove" className="editAndRemoveIconBtns" value={1} onClick={(e)=>onPopupFunction(e)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M4.00001 12.6667C4.00001 13.0203 4.14049 13.3594 4.39053 13.6095C4.64058 13.8595 4.97972 14 5.33334 14H10.6667C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H4.00001V12.6667ZM5.33334 6H10.6667V12.6667H5.33334V6ZM10.3333 2.66667L9.66668 2H6.33334L5.66668 2.66667H3.33334V4H12.6667V2.66667H10.3333Z" fill="#FF1400"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="arrowIconsCon">
+                    <button name="scrollLeft" onClick={(e)=>onPopupFunction(e)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" viewBox="0 0 30 29" fill="none">
+                            <path d="M7.74998 14.5H23.4583" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M11.375 19.3333L6.54167 14.5L11.375 9.66666" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <button name="scrollRight" onClick={(e)=>onPopupFunction(e)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" viewBox="0 0 30 29" fill="none">
+                            <path d="M22.25 14.5H6.54169" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18.625 19.3333L23.4583 14.5L18.625 9.66666" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
 
                 <button name='Download' onClick={(e)=>onPopupFunction(e)} className='innerDownloadButton'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">

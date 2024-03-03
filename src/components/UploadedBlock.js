@@ -159,6 +159,22 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                 break;
             case "Download":
                 console.log(name);
+                break; 
+            case "scrollLeft":
+                console.log(name);
+                break; 
+            case "scrollRight":
+                console.log(name);
+                break; 
+            case "rename":
+                console.log(name);
+                break; 
+            case "edit":
+                console.log(name);
+                break; 
+            case "remove":
+                console.log(name);
+                break; 
         }
     }
 

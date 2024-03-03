@@ -390,10 +390,6 @@
     cursor: pointer;
 }
 
-.innerDownloadButton:focus,
-.dataFormatRdioInput:focus{
-    outline: none;
-}
 
 .formatBtn{
     display: flex;
@@ -422,4 +418,107 @@
     font-family: Roboto;
     font-size: 16px;
     font-weight: 400;
+}
+
+.displayingPagesCon{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex;
+    width: 95%;
+    margin-top: 2%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.eachPageCon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 153px;
+    flex-direction: column;
+
+}
+
+.eachPageImgCon{
+    width: 100%;
+    height: 220px;
+    flex-shrink: 0;
+    border: 0.5px solid #000;
+    background: lightgray 50% / cover no-repeat;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+}
+
+.eachPageBottomCon{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.eachPageBottomCon span{
+    color: #72738A;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.eachPageBottomRightSideCon{
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.renameBtn{
+    color: #72738A;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+}
+
+.editAndRemoveIconBtns{
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.editAndRemoveIconBtns svg{
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
+.arrowIconsCon{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width:100%;
+    gap: 18px;
+}
+
+.arrowIconsCon button{
+    cursor: pointer;
+    width: 29px;
+    height: 29px;
+    border:none;
+    background-color:transparent;
+}
+
+.arrowIconsCon button svg{
+    width: 29px;
+    height: 29px;
+    pointer-events: none;
+}
+
+.arrowIconsCon button,
+.renameBtn,
+.editAndRemoveIconBtns,
+.innerDownloadButton:focus,
+.dataFormatRdioInput:focus{
+    outline: none;
 }
