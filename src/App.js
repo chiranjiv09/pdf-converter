@@ -6,7 +6,6 @@ import LandingPage from './components/LandingPage';
 import HomePage from './components/HomePage';
 
 
-
 function App() {
   const [pageChange, setPageChange] = useState(true);
 
@@ -17,14 +16,15 @@ function App() {
   },[]);
 
   return (
-    <div className="App">
-      {pageChange ?(
-        <LandingPage />
-      ):(
-        <HomePage />
-      )}
+    
+      <div className="App">
+        {pageChange ?(
+          <LandingPage />
+        ):(
+          <HomePage />
+        )}
 
-    </div>
+      </div>
   );
 }
 

@@ -4,16 +4,23 @@
     padding: 0;
     line-height: normal;
     letter-spacing: 0;
-  line-height: normal;
-  }
+    line-height: normal;
+}
 
 .headerMainCon{
     width: 100%;
     display: flex;
     align-items:center;
-    background-color: #fafafa;
     height: 70px;
     padding-left: 5%;
+    background: #FAFAFA;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+}
+
+.headerMainCon img{
+    width: 45px;
+    height: 45px;
+    margin-right: 5px;
 }
 
 .HomePageMainCon{
@@ -50,7 +57,10 @@
 }
 
 .HomePageSideImgs{
-    height: 100%;
+    width: 30%;
+    height: 267px;
+    flex-shrink: 0;
+    background: linear-gradient(90deg, rgba(233, 226, 255, 0.30) 0%, rgba(245, 241, 255, 0.30) 70.5%, rgba(255, 255, 255, 0.30) 100%);
 }
 
 .HomePageTopMiddleCon{
@@ -75,28 +85,75 @@
 }
 
 .logoImage{
-    width:90%;
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
 }
 
 .pageText{
     color: #303030;
-    margin-bottom:5%;
+    font-family: "Roboto";
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 
 .inputFileButton{
     background: #C5B8EC;
-    padding: 20px;
-    color: white;
+    padding: 16px;
     margin-bottom:5%;
     border-radius: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 500;
+    margin-top: 4%;
+}
+
+.inputFileButton svg{
+    width: 36px;
+    height: 36px;
+}
+
+.replaceText{
+    margin-left: 4px;
+    margin-right: 14px;
+    color: #5D5E88;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .dragAndDropText{
-    color: #C5B8EC;
+    color: #9294C6;
+    font-family: "Roboto";
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 
 .HomePageBottomCon p {
-    color: black;
+    color: #000;
+    font-family: "Roboto";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    
+}
+
+.HomePageBottomHeading{
+    border-bottom: 2px solid #000;
 }
 
 .informationCardsCon{
@@ -119,8 +176,21 @@
     align-items: flex-start;
 }
 
+.informationCard h2{
+    text-align: left;
+    color: #5C43A2;
+    font-family: "Roboto";
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom:11px;
+}
+
 .informationCard p{
     text-align: left;
+    color: #202020;
+    font-family: "Roboto";
+    font-size: 22px;
+    font-weight: 500;
 }
 
 .react-pdf__Page{
@@ -176,11 +246,6 @@
     margin-left: 5px;
  }
 
- .replaceText{
-    color: #5D5E88;
-    font-size:16px;
- }
-
  .downloadBtnsCon{
     display: flex;
     justify-content: flex-end;
@@ -199,12 +264,14 @@
     align-items: center;
     color: #9A81E2;
     background-color: white;
+    cursor: pointer;
  }
 
  .downloadAllBtn{
     background-color: #9A81E2;
     border: none;
     color: white;
+    cursor: pointer;
  }
 
  .downloadIconCon{
@@ -228,11 +295,131 @@
     width: 100%;
 }
 
+.newFileCon{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}
+
 .successfullyText{
-    font-size:20px;
-    font-weight: bold;
+    color: #0066DA;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 
 .successfullyTextContant{
-    color: black;
+    color: #202020;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.landingPageImg{
+    width: 220px;
+    height: 220px;
+    flex-shrink: 0;
+}
+
+/* Popup */
+
+.modalMainCon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    flex-direction: column;
+    padding-bottom: 3%;
+}
+
+.FormatBlockMainCon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.popupCross{
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.radioInputsHoldingCon{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: 28px;
+}
+
+.dataFormatRdioInput{
+    width: 36px;
+    height: 36px;
+    accent-color: violet;
+    cursor: pointer;
+}
+
+
+
+.radioInputContant{
+    color: #202020;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 19px;
+}
+
+.innerDownloadButton{
+    border-radius: 10px;
+    background: #9A81E2;
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    margin-top:22px;
+    cursor: pointer;
+}
+
+.innerDownloadButton:focus,
+.dataFormatRdioInput:focus{
+    outline: none;
+}
+
+.formatBtn{
+    display: flex;
+    padding: 4px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 30px;
+    background: #F3EEFF;
+
+    color: #5C43A2;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    border: none;
+}
+
+.selectedFormatBtn{
+    border-radius: 30px;
+    border: 1px solid #5C43A2;
+    background: #5C43A2;
+    box-shadow: 0px 4px 20px 0px #C9B4FC;
+
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
 }
