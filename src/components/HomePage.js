@@ -142,7 +142,7 @@ const HomePage = () => {
             </div>
             
             {file !== undefined && file !== null ?
-                <UploadedBlock file={file} fileUrl={fileUrl} onChangeFile={onChangeFile}/>
+                <UploadedBlock file={file} fileUrl={fileUrl} allPageArray={allPageArray} onChangeFile={onChangeFile}/>
             :
                 <BasicSteps />
             }

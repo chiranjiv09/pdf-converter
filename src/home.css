@@ -206,12 +206,22 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 239px;
+    height: 273px;
+    flex-shrink: 0;
 }
 
-.react-pdf__Page__canvas {
-    margin: 0 auto;
-    width: 100% !important;
-    height: 100% !important;
+
+.pdfPageCard img{
+    border: 0.5px solid #000;
+    background: lightgray 50% / cover no-repeat;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+    width: 223px;
+    height: 220px;
+    flex-shrink: 0;
 }
 
 .pdfPageCardTextCon{
@@ -219,6 +229,7 @@
     justify-content: space-between;
     align-items:center;
     margin-top:8px;
+    width: 100%;
 }
 
 .pdfPageCardTextCon p{
@@ -244,6 +255,7 @@
     top:7px;
     z-index: 1;
     margin-left: 5px;
+    align-self: flex-start;
  }
 
  .downloadBtnsCon{
@@ -425,18 +437,30 @@
     justify-content: flex-start;
     align-items: flex;
     width: 95%;
-    margin-top: 2%;
+    margin-top: 5%;
     overflow-x: auto;
     overflow-y: hidden;
+    gap: 4%;
+    scroll-behavior: smooth;
 }
+
+.displayingPagesCon::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .displayingPagesCon {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
 .eachPageCon{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 153px;
+    width: 100%;
     flex-direction: column;
-
+    max-width: 153px !important;
 }
 
 .eachPageImgCon{
@@ -499,6 +523,7 @@
     align-items: center;
     width:100%;
     gap: 18px;
+    margin-top: 3%;
 }
 
 .arrowIconsCon button{

@@ -11,12 +11,12 @@ import FormatBlock from './FormatBlock';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 //import samplePDF from '../test.pdf';
 
-const UploadedBlock = ({fileUrl, onChangeFile}) => {
+const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
     const [numPages, setNumPages] = useState(null);
     const [items, setItems] = useState([]);
     const [selectedFormat, setSelectedFormat] = useState({});
 
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpen, setIsOpen] = useState(false);
 
     function openModal(identifier) {
         if(identifier === "OPEN"){
@@ -152,6 +152,9 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
     const onPopupFunction = (e) => {
         let name = e.target.name;
         let value = e.target.value;
+        
+        const divEl = document.getElementById("pagesDispalyScrollCon");
+
         switch(name){
             case "format":
                 console.log(name);
@@ -162,9 +165,15 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                 break; 
             case "scrollLeft":
                 console.log(name);
+                if(divEl != undefined && divEl != null){
+                    divEl.scrollLeft -= 200;
+                }
                 break; 
             case "scrollRight":
                 console.log(name);
+                if(divEl != undefined && divEl != null){
+                    divEl.scrollLeft += 200;
+                }
                 break; 
             case "rename":
                 console.log(name);
@@ -180,7 +189,10 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
 
 
     const onDownload = (identifier) => {
-        openModal("OPEN")
+        if(items.length > 0){
+            openModal("OPEN");
+        }
+        
         if(identifier === "S"){
             // convertPDFToImageFiles(fileUrl, conversionRequests, updateProgress);
         }else{
@@ -222,6 +234,8 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                     key="downloadBlock"
                     selectedFormat={selectedFormat} 
                     onPopupFunction={onPopupFunction}
+                    allPageArray={allPageArray}
+                    items={items}
                 />
             </div>
         </Modal>
@@ -254,16 +268,10 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                             Download All Images
                         </button>
                     </div>
-                </div>
-
-                <Document 
-                    file={fileUrl}
-                    options={options}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                >   
-                    <div className="pdfPageCardsCon">
-                    {numPages !== undefined && numPages !== null &&
-                    Array.from(new Array(numPages)).map((each, index)=>{
+                </div> 
+                <div className="pdfPageCardsCon">
+                    {allPageArray && allPageArray.length != undefined && allPageArray.length > 0 && 
+                    allPageArray.map((eachPage, index)=>{
                         return(
                             <div key={`pageBox_${index}`} className="pdfPageCard">
                                 <input 
@@ -271,18 +279,11 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                                     className='checkBox' 
                                     onChange={(e)=>onSelectItems(e)} 
                                     type='checkbox'
-                                    value={index}
+                                    value={index+1}
                                     id={`checkBox_${index}`} 
                                     //checked={items.includes(index)}
                                 />
-                                <Page 
-                                    key={`page_${index + 1}`} 
-                                    pageNumber={index + 1} 
-                                    renderTextLayer={false} 
-                                    renderAnnotationLayer={false}
-                                    wrap={false}
-                                    size="A4" 
-                                />
+                                <img alt='page' src={eachPage.fileUrl} className='' />
                                 <div className="pdfPageCardTextCon">
                                     <p>Page <span>{index+1}</span></p>
                                     <React.Fragment>
@@ -293,7 +294,6 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                         )
                     })}  
                     </div>             
-                </Document>
             </div>
         
     )
