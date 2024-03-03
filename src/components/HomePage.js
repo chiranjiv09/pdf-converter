@@ -9,7 +9,7 @@ const HomePage = () => {
     const [fileUrl, setFileUrl] = useState(null)
 
     const onChangeFile = (e, identifier) => {
-        if(identifier == "U"){
+        if(identifier === "U"){
             let file = e.target.files[0];
             setFile(file);
             setFileUrl(URL.createObjectURL(file));
@@ -32,7 +32,7 @@ const HomePage = () => {
                     </div>
                     <p className="pageText">PDF TO IMAGE CONVERTOR</p>
 
-                    {file != undefined && file != null ?
+                    {file !== undefined && file !== null ?
                     <React.Fragment>
                         <p className='successfullyText'>Your file converted to images successfully!</p>
                         <p className='successfullyTextContant'>( You can download all the pages and separate page too )</p>
@@ -51,7 +51,7 @@ const HomePage = () => {
                 <img src="" className="HomePageSideImgs" alt="side Imgs" />
             </div>
             
-            {file != undefined && file != null ?
+            {file !== undefined && file !== null ?
                 <UploadedBlock file={file} fileUrl={fileUrl} onChangeFile={onChangeFile}/>
             :
                 <BasicSteps />

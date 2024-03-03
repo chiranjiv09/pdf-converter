@@ -28,10 +28,120 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
         setItems(prevItems);
     };
 
+    const convertPDFToImageFiles = (fileUrl, conversionRequests, progressCallback) => {
+        const totalRequests = conversionRequests.length;
+        let completedRequests = 0;
+        progressCallback(completedRequests);
+    
+        window.pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
+            const totalPages = pdf.numPages;
+            const promises = [];
+    
+            const downloadFile = (file, fileName) => {
+                return new Promise(resolve => {
+                    const a = document.createElement('a');
+                    const url = URL.createObjectURL(file);
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    resolve();
+                });
+            };
+    
+            conversionRequests.forEach(request => {
+                const { id, pageNumber, outputFileType, fileName } = request;
+                const fileExtension = outputFileType.toLowerCase();
+    
+                if (pageNumber >= 1 && pageNumber <= totalPages) {
+                    promises.push(
+                        pdf.getPage(pageNumber).then(page => {
+                            return new Promise(resolve => {
+                                const canvas = document.createElement('canvas');
+                                const context = canvas.getContext('2d');
+    
+                                const viewport = page.getViewport({ scale: 1 });
+                                canvas.width = viewport.width;
+                                canvas.height = viewport.height;
+    
+                                const renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport,
+                                };
+                                page.render(renderContext).promise.then(() => {
+                                    canvas.toBlob(blob => {
+                                        const file = new File([blob], fileName, { type: `image/${fileExtension}` });
+                                        resolve({
+                                            file,
+                                            pageNumber
+                                        });
+                                    }, `image/${fileExtension}`);
+                                }).catch(error => {
+                                    console.error(`Error rendering PDF page ${pageNumber}:`, error);
+                                    resolve(null);
+                                });
+                            });
+                        }).catch(error => {
+                            console.error(`Error fetching page ${pageNumber}:`, error);
+                            return null;
+                        })
+                    );
+                } else {
+                    console.warn(`Invalid pageNumber (${pageNumber}) for conversion request with id ${id}. Skipping.`);
+                }
+            });
+    
+            Promise.all(promises).then(async filesData => {
+                const validFiles = filesData.filter(data => data !== null);
+                const files = validFiles.map(data => data.file);
+                const pageNumbers = validFiles.map(data => data.pageNumber);
+    
+                // Handle the downloaded files and page numbers as needed
+                console.log('Downloaded files:', files);
+                console.log('Corresponding page numbers:', pageNumbers);
+    
+                // Download files asynchronously with progress
+                for (let i = 0; i < files.length; i++) {
+                    const progress = Math.floor((++completedRequests / totalRequests) * 100);
+                    progressCallback(progress);
+    
+                    await downloadFile(files[i], files[i].name);
+                }
+    
+                // Reset progress after completion
+                progressCallback(100);
+            }).catch(error => {
+                console.error('Error processing PDF pages:', error);
+            });
+        }).catch(error => {
+            console.error('Error loading PDF document:', error);
+        });
+    }
+    
+    const conversionRequests = [
+        { id: '1', pageNumber: 1, outputFileType: 'jpeg', fileName: 'converted_image' },
+        { id: '2', pageNumber: 2, outputFileType: 'jpeg', fileName: 'converted_image' },
+        // Add more conversion requests as needed
+    ];
+    
+    const updateProgress = (percentage) => {
+        console.log(`Download progress: ${percentage}%`);
+        // Update your loader UI with the current percentage
+    };
+    
+    
+    
+    // // Example usage: download pages starting from page 1 in JPEG format
+    // convertPDFToImageFiles(1, 'jpeg');
+    
+
 
     const onDownload = (identifier) => {
-        if(identifier == "S"){
-            //Selected
+        if(identifier === "S"){
+            
+    convertPDFToImageFiles(fileUrl, conversionRequests, updateProgress);
 
         }else{
             //All
@@ -69,7 +179,7 @@ const UploadedBlock = ({fileUrl, onChangeFile}) => {
                 onLoadSuccess={onDocumentLoadSuccess}
             >   
                 <div className="pdfPageCardsCon">
-                {numPages != undefined && numPages != null &&
+                {numPages !== undefined && numPages !== null &&
                 Array.from(new Array(numPages)).map((each, index)=>{
                     return(
                         <div key={`pageBox_${index}`} className="pdfPageCard">
