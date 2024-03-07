@@ -463,13 +463,19 @@
     max-width: 153px !important;
 }
 
-.eachPageImgCon{
+.imageHoldingCon{
     width: 100%;
     height: 220px;
-    flex-shrink: 0;
     border: 0.5px solid #000;
     background: lightgray 50% / cover no-repeat;
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.eachPageImgCon{
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
 }
 
 .eachPageBottomCon{
@@ -480,41 +486,17 @@
     margin-top: 8px;
 }
 
-.eachPageBottomCon span{
-    color: #72738A;
+.eachPageBottomCon input{
+    border-radius: 7px;
+    border: 0.5px solid #9294C6;
+    background: #FAFAFA;
+    width: 100%;
+    padding:5px;
+    padding-left: 10px;
+    color: #242424;
     font-family: Roboto;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 500;
-}
-
-.eachPageBottomRightSideCon{
-    display: flex;
-    justify-content:flex-end;
-    align-items: flex-end;
-    gap: 5px;
-}
-
-.renameBtn{
-    color: #72738A;
-    font-family: Roboto;
-    font-size: 12px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-}
-
-.editAndRemoveIconBtns{
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-}
-
-.editAndRemoveIconBtns svg{
-    width: 14px;
-    height: 14px;
-    pointer-events: none;
 }
 
 .arrowIconsCon{
@@ -540,9 +522,42 @@
     pointer-events: none;
 }
 
-.arrowIconsCon button,
-.renameBtn,
-.editAndRemoveIconBtns,
+.modificationCon{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+}
+
+.imageHoldingCon:hover .modificationCon{
+    display: flex !important;
+} 
+
+.editCircleCon{
+    width: 41px;
+    height: 41px;
+    flex-shrink: 0;
+    background-color: #282828;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+}
+
+.editCircleCon svg{
+    pointer-events: none;
+}
+
+.eachPageBottomCon input:focus,
+.arrowIconsCon button:focus,
 .innerDownloadButton:focus,
 .dataFormatRdioInput:focus{
     outline: none;

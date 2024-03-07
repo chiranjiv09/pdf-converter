@@ -14,7 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
     const [numPages, setNumPages] = useState(null);
     const [items, setItems] = useState([]);
-    const [selectedFormat, setSelectedFormat] = useState({});
+    const [selectedFormat, setSelectedFormat] = useState({format:"jpeg"});
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -149,11 +149,22 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
     // // Example usage: download pages starting from page 1 in JPEG format
     // convertPDFToImageFiles(1, 'jpeg');
     
-    const onPopupFunction = (e) => {
+    // const [selectedPage, setSelectedPage ] = useState(null);
+    const onPopupFunction = (e, obj) => {
         let name = e.target.name;
         let value = e.target.value;
-        
+        let prevItems = [...allPageArray];
         const divEl = document.getElementById("pagesDispalyScrollCon");
+
+        // const prevBoxEl = document.getElementById(`imageBox_${selectedPage}`);
+        // const boxEl = document.getElementById(`imageBox_${obj.pageNumber}`);
+
+        
+        // if(selectedPage != null && prevBoxEl){
+        //     prevBoxEl.style.display = "none";
+        // }
+
+        // setSelectedPage(obj.pageNumber);
 
         switch(name){
             case "format":
@@ -176,13 +187,19 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
                 }
                 break; 
             case "rename":
-                console.log(name);
+                console.log(name, obj);
                 break; 
             case "edit":
-                console.log(name);
+                console.log(name, obj);
                 break; 
             case "remove":
-                console.log(name);
+                console.log(name, obj);
+                break; 
+            case "box":
+                console.log(name, obj);
+                // if(boxEl){
+                //     boxEl.style.display = "flex";
+                // }
                 break; 
         }
     }

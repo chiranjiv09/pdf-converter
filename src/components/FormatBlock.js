@@ -1,6 +1,7 @@
 import React from 'react';
 import '../home.css';
 
+
 const FormatBlock = ({selectedFormat, onPopupFunction, items, allPageArray}) => {
     return (
         <div className="FormatBlockMainCon">
@@ -36,6 +37,7 @@ const FormatBlock = ({selectedFormat, onPopupFunction, items, allPageArray}) => 
                         PNG
                     </button>
                 </div>
+
         {/* displaying Selected Pages */}
                 <div id="pagesDispalyScrollCon" className="displayingPagesCon">
                     {/* Each Page */}
@@ -44,22 +46,22 @@ const FormatBlock = ({selectedFormat, onPopupFunction, items, allPageArray}) => 
                         if(items.includes(`${eachPage.pageNumber}`)){
                         return(
                             <div key={index} className="eachPageCon">
-                                <img className="eachPageImgCon" src={eachPage.fileUrl} alt="pageImg" />                         
+                                
+                                <div className="imageHoldingCon">
+                                    {/* Delete while hover */}
+                                    <div className="modificationCon" id={`imageBox_${eachPage.pageNumber}`} >
+                                        <button name="remove" className="editCircleCon" value={eachPage.pageNumber} onClick={(e)=>onPopupFunction(e, eachPage)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <path d="M7.55554 7.11111H24.4444V8.88889H7.55554V7.11111Z" fill="white"/>
+                                                <path d="M13.7778 7.11111V5.33333H18.2222V7.11111M22.6667 11.1111V24.8889C22.6667 25.3604 22.4794 25.8126 22.146 26.146C21.8126 26.4794 21.3604 26.6667 20.8889 26.6667H11.1111C10.6396 26.6667 10.1874 26.4794 9.85402 26.146C9.52062 25.8126 9.33332 25.3604 9.33332 24.8889V11.1111M18.2222 12.5556V24.4444M13.7778 12.5556V24.4444M7.55554 7.11111H24.4444V8.88888H7.55554V7.11111Z" stroke="white" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </button>
+                                    </div>      
+                                    <img className="eachPageImgCon" src={eachPage.fileUrl} alt="pageImg" />
+                                </div>
+
                                 <div className="eachPageBottomCon">
-                                    <span>Page {eachPage.pageNumber}</span>
-                                    <div className="eachPageBottomRightSideCon">
-                                        <button className="renameBtn" name="rename" value={eachPage.pageNumber} onClick={(e)=>onPopupFunction(e)}>Rename</button>
-                                        <button name="edit" className="editAndRemoveIconBtns" value={eachPage.pageNumber} onClick={(e)=>onPopupFunction(e)}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                                <path d="M1.75 12.25H12.25M7.1295 3.39967L8.77917 1.75L11.6667 4.6375L10.017 6.28717M7.1295 3.39967L3.85875 6.67042C3.74935 6.77979 3.68787 6.92814 3.68783 7.08283V9.72883H6.33383C6.48853 9.7288 6.63688 9.66732 6.74625 9.55792L10.017 6.28717M7.1295 3.39967L10.017 6.28717" stroke="#9294C6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                        <button name="remove" className="editAndRemoveIconBtns" value={eachPage.pageNumber} onClick={(e)=>onPopupFunction(e)}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <path d="M4.00001 12.6667C4.00001 13.0203 4.14049 13.3594 4.39053 13.6095C4.64058 13.8595 4.97972 14 5.33334 14H10.6667C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H4.00001V12.6667ZM5.33334 6H10.6667V12.6667H5.33334V6ZM10.3333 2.66667L9.66668 2H6.33334L5.66668 2.66667H3.33334V4H12.6667V2.66667H10.3333Z" fill="#FF1400"/>
-                                            </svg>
-                                        </button>
-                                    </div>
+                                    <input id={"input"+eachPage.pageNumber} type="text" value={eachPage.fileName != undefined ? eachPage.fileName : ""} />
                                 </div>
                             </div>
                           )
