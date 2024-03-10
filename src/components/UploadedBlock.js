@@ -7,13 +7,12 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 
 import Modal from 'react-modal';
 
-import { Document, Page, pdfjs } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
 import FormatBlock from './FormatBlock';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 //import samplePDF from '../test.pdf';
 
-const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) => {
-    const [numPages, setNumPages] = useState(null);
+const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray, setLoadingStatus, setFileUrl, setFile}) => {
     const [items, setItems] = useState([]);
     const [selectedFormat, setSelectedFormat] = useState({format:"jpeg"});
     const [selectedObjArray , setSelectedObjArray] = useState([]);
@@ -25,7 +24,7 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) =
         }else{
             setIsOpen(false);
         }
-    }
+    };
 
     useEffect(()=>{
         let objArray = [];
@@ -52,13 +51,19 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) =
         }
         setItems(prevItems);
     };
-
-    function onDocumentLoadSuccess({ numPages }) {
-        setNumPages(numPages);
-    }
     
     const updateProgress = (percentage) => {
         console.log(`Download progress: ${percentage}%`);
+        setLoadingStatus(percentage);
+        if(percentage == 100){
+            setAllPageArray([]);
+            setItems([]);
+            setFileUrl(null);
+            setFile(null);
+            setTimeout(() =>{
+                setLoadingStatus(null);
+            },1000);
+        }
     };
 
     const isValid=(input)=>{
@@ -208,6 +213,7 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) =
                 );
                 break;
             case "Download":
+                setIsOpen(false);
                 updateAndDownloadSelectedObj(selectedObjArray);
                 break; 
             case "scrollLeft":
@@ -307,6 +313,7 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) =
                     selectedObjArray={selectedObjArray}
                     setSelectedObjArray = {setSelectedObjArray}
                     items={items}
+                    totalLength={allPageArray.length}
                 />
             </div>
         </Modal>
@@ -352,14 +359,11 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) =
                                     type='checkbox'
                                     value={index+1}
                                     id={`checkBox_${index}`} 
-                                    //checked={items.includes(index)}
+                                    checked={items.includes(eachPage.pageNumber)}
                                 />
                                 <img alt='page' src={eachPage.fileUrl} className='' />
                                 <div className="pdfPageCardTextCon">
-                                    <p>Page <span>{index+1}</span></p>
-                                    <React.Fragment>
-
-                                    </React.Fragment>
+                                    <p>{eachPage.fileName}</p>
                                 </div>
                             </div>
                         )

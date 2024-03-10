@@ -10,6 +10,7 @@ const HomePage = () => {
     const [file, setFile] = useState(null);
     const [fileUrl, setFileUrl] = useState(null);
     const [allPageArray,setAllPageArray] = useState([]);
+    const [loadingStatus, setLoadingStatus ] = useState(null);
 
     const convertPdfToJpeg = (fileUrl)=> {
         return window.pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
@@ -120,6 +121,8 @@ const HomePage = () => {
                     </div>
                     <p className="pageText">PDF TO IMAGE CONVERTOR</p>
 
+                    {loadingStatus == null ?
+                    <React.Fragment>
                     {file !== undefined && file !== null ?
                     <React.Fragment>
                         <p className='successfullyText'>Your file converted to images successfully!</p>
@@ -135,19 +138,35 @@ const HomePage = () => {
                         </label>
                         <p className="dragAndDropText">or drag and drop file here</p>
                     </React.Fragment>
-                    }    
+                    } 
+                    </React.Fragment>
+                    :
+                    <div className="loaderContainer">     
+                        {/* Loading... */}
+                        <div className="loaderTopContainer">
+                          <span>Uploading file</span>
+                          <span>{loadingStatus}%</span>
+                        </div>
+                        <div className="loaderBottomContainer">
+                          <div className="loaderStatus" style={{width:`${loadingStatus}%`}}></div>
+                        </div>
+                    </div>
+                  }
 
                 </div>
                 <img src="" className="HomePageSideImgs" alt="side Imgs" />
             </div>
             
-            {file !== undefined && file !== null ?
+            {file !== undefined && file !== null && allPageArray.length != undefined && allPageArray.length > 0 ?
                 <UploadedBlock 
-                file={file}
                 fileUrl={fileUrl} 
                 allPageArray={allPageArray} 
                 setAllPageArray = {setAllPageArray}
-                onChangeFile={onChangeFile}/>
+                onChangeFile={onChangeFile}
+                setLoadingStatus={setLoadingStatus}
+                setFileUrl={setFileUrl}
+                setFile={setFile}
+                />
             :
                 <BasicSteps />
             }

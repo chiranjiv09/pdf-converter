@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import '../home.css';
 
 
-const FormatBlock = ({selectedFormat, onPopupFunction, items, setSelectedObjArray ,selectedObjArray}) => {
+const FormatBlock = ({selectedFormat, onPopupFunction, items, setSelectedObjArray ,selectedObjArray, totalLength}) => {
  
     return (
         <div className="FormatBlockMainCon">
@@ -39,6 +39,8 @@ const FormatBlock = ({selectedFormat, onPopupFunction, items, setSelectedObjArra
                     </button>
                 </div>
 
+                <p className="displayingPageNumbers"><span>{selectedObjArray && selectedObjArray.length != undefined && selectedObjArray.length}</span> / {totalLength}</p>
+
         {/* displaying Selected Pages */}
                 <div id="pagesDispalyScrollCon" className="displayingPagesCon">
                     {/* Each Page */}
@@ -67,7 +69,6 @@ const FormatBlock = ({selectedFormat, onPopupFunction, items, setSelectedObjArra
                                     type="text" 
                                     value={eachPage.fileName != undefined ? eachPage.fileName : ""}
                                     onChange={(e)=>onPopupFunction(e, eachPage)}
-                                    
                                     />
                                 </div>
                             </div>
