@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../home.css';
 
 
-const FormatBlock = ({selectedFormat, onPopupFunction, items, allPageArray}) => {
+const FormatBlock = ({selectedFormat, onPopupFunction, items, setSelectedObjArray ,selectedObjArray}) => {
+ 
     return (
         <div className="FormatBlockMainCon">
                 <span className="radioInputContant" >Select the format you want to download your image!</span>
@@ -41,9 +42,8 @@ const FormatBlock = ({selectedFormat, onPopupFunction, items, allPageArray}) => 
         {/* displaying Selected Pages */}
                 <div id="pagesDispalyScrollCon" className="displayingPagesCon">
                     {/* Each Page */}
-                    {allPageArray && allPageArray.length != undefined && allPageArray.length > 0 && 
-                    allPageArray.map((eachPage, index)=>{
-                        if(items.includes(`${eachPage.pageNumber}`)){
+                    {selectedObjArray && selectedObjArray.length != undefined && selectedObjArray.length > 0 && 
+                    selectedObjArray.map((eachPage, index)=>{
                         return(
                             <div key={index} className="eachPageCon">
                                 
@@ -61,11 +61,18 @@ const FormatBlock = ({selectedFormat, onPopupFunction, items, allPageArray}) => 
                                 </div>
 
                                 <div className="eachPageBottomCon">
-                                    <input id={"input"+eachPage.pageNumber} type="text" value={eachPage.fileName != undefined ? eachPage.fileName : ""} />
+                                    <input 
+                                    id={"input"+eachPage.pageNumber} 
+                                    name ="rename"
+                                    type="text" 
+                                    value={eachPage.fileName != undefined ? eachPage.fileName : ""}
+                                    onChange={(e)=>onPopupFunction(e, eachPage)}
+                                    
+                                    />
                                 </div>
                             </div>
                           )
-                        }
+                        
                         })}  
                 </div>
 

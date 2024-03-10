@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable default-case */
+import React, { useEffect, useState } from 'react';
 import '../home.css';
 
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
@@ -11,11 +12,11 @@ import FormatBlock from './FormatBlock';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 //import samplePDF from '../test.pdf';
 
-const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
+const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray}) => {
     const [numPages, setNumPages] = useState(null);
     const [items, setItems] = useState([]);
     const [selectedFormat, setSelectedFormat] = useState({format:"jpeg"});
-
+    const [selectedObjArray , setSelectedObjArray] = useState([]);
     const [modalIsOpen, setIsOpen] = useState(false);
 
     function openModal(identifier) {
@@ -24,17 +25,26 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
         }else{
             setIsOpen(false);
         }
-        
     }
 
-    function onDocumentLoadSuccess({ numPages }) {
-        setNumPages(numPages);
-    }
+    useEffect(()=>{
+        let objArray = [];
+        if(items != null && items.length > 0 && allPageArray != null && allPageArray.length > 0){
+            allPageArray.forEach(element => {
+                if(items.includes(parseInt(element.pageNumber))){
+                    objArray.push(element)
+                }
+            });
+        }
+        setSelectedObjArray(objArray)
+    },[items,allPageArray])
+
+    
 
     const onSelectItems = (e) =>{
         let prevItems = [...items];
         let isChecked = e.target.checked;
-        let value = e.target.value;
+        let value = parseInt(e.target.value) ;
         if(isChecked){
             prevItems.push(value);
         }else{
@@ -43,136 +53,162 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
         setItems(prevItems);
     };
 
-    // const convertPDFToImageFiles = (fileUrl, conversionRequests, progressCallback) => {
-    //     const totalRequests = conversionRequests.length;
-    //     let completedRequests = 0;
-    //     progressCallback(completedRequests);
-    
-    //     window.pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
-    //         const totalPages = pdf.numPages;
-    //         const promises = [];
-    
-    //         const downloadFile = (file, fileName) => {
-    //             return new Promise(resolve => {
-    //                 const a = document.createElement('a');
-    //                 const url = URL.createObjectURL(file);
-    //                 a.href = url;
-    //                 a.download = fileName;
-    //                 document.body.appendChild(a);
-    //                 a.click();
-    //                 document.body.removeChild(a);
-    //                 URL.revokeObjectURL(url);
-    //                 resolve();
-    //             });
-    //         };
-    
-    //         conversionRequests.forEach(request => {
-    //             const { id, pageNumber, outputFileType, fileName } = request;
-    //             const fileExtension = outputFileType.toLowerCase();
-    
-    //             if (pageNumber >= 1 && pageNumber <= totalPages) {
-    //                 promises.push(
-    //                     pdf.getPage(pageNumber).then(page => {
-    //                         return new Promise(resolve => {
-    //                             const canvas = document.createElement('canvas');
-    //                             const context = canvas.getContext('2d');
-    
-    //                             const viewport = page.getViewport({ scale: 1 });
-    //                             canvas.width = viewport.width;
-    //                             canvas.height = viewport.height;
-    
-    //                             const renderContext = {
-    //                                 canvasContext: context,
-    //                                 viewport: viewport,
-    //                             };
-    //                             page.render(renderContext).promise.then(() => {
-    //                                 canvas.toBlob(blob => {
-    //                                     const file = new File([blob], fileName, { type: `image/${fileExtension}` });
-    //                                     resolve({
-    //                                         file,
-    //                                         pageNumber
-    //                                     });
-    //                                 }, `image/${fileExtension}`);
-    //                             }).catch(error => {
-    //                                 console.error(`Error rendering PDF page ${pageNumber}:`, error);
-    //                                 resolve(null);
-    //                             });
-    //                         });
-    //                     }).catch(error => {
-    //                         console.error(`Error fetching page ${pageNumber}:`, error);
-    //                         return null;
-    //                     })
-    //                 );
-    //             } else {
-    //                 console.warn(`Invalid pageNumber (${pageNumber}) for conversion request with id ${id}. Skipping.`);
-    //             }
-    //         });
-    
-    //         Promise.all(promises).then(async filesData => {
-    //             const validFiles = filesData.filter(data => data !== null);
-    //             const files = validFiles.map(data => data.file);
-    //             const pageNumbers = validFiles.map(data => data.pageNumber);
-    
-    //             // Handle the downloaded files and page numbers as needed
-    //             console.log('Downloaded files:', files);
-    //             console.log('Corresponding page numbers:', pageNumbers);
-    
-    //             // Download files asynchronously with progress
-    //             for (let i = 0; i < files.length; i++) {
-    //                 const progress = Math.floor((++completedRequests / totalRequests) * 100);
-    //                 progressCallback(progress);
-    
-    //                 await downloadFile(files[i], files[i].name);
-    //             }
-    
-    //             // Reset progress after completion
-    //             progressCallback(100);
-    //         }).catch(error => {
-    //             console.error('Error processing PDF pages:', error);
-    //         });
-    //     }).catch(error => {
-    //         console.error('Error loading PDF document:', error);
-    //     });
-    // }
-    
-    const conversionRequests = [
-        { id: '1', pageNumber: 1, outputFileType: 'jpeg', fileName: 'converted_image' },
-        { id: '2', pageNumber: 2, outputFileType: 'jpeg', fileName: 'converted_image' },
-        // Add more conversion requests as needed
-    ];
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
     
     const updateProgress = (percentage) => {
         console.log(`Download progress: ${percentage}%`);
-        // Update your loader UI with the current percentage
+    };
+
+    const isValid=(input)=>{
+        if(input != null){
+            if(input !== "jpeg" && input !== "png" && input !== "jpg"){
+                return false;
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    const downloadFile = (file, fileName) => {
+        return new Promise((resolve, reject) => {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(file);
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(downloadLink.href);
+            resolve();
+        });
+    };
+
+    const convertAndDownloadImage = (inputImageUrl, targetFileType, downloadFileName) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+    
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const context = canvas.getContext('2d');
+                context.drawImage(img, 0, 0);
+    
+                canvas.toBlob(blob => {
+                    const fileExtension = targetFileType.toLowerCase();
+                    const file = new File([blob], {
+                        type: `image/${fileExtension}`
+                    });
+                    resolve(file);
+                    const extension = downloadFileName.split(".").pop().toLowerCase();
+                    let name ;
+                    if(isValid(extension) === false){
+                        const parts = downloadFileName.split(".");
+                        const result = parts.join(".");
+                        name = result + "." + fileExtension;
+                    }else{
+                        name = downloadFileName
+                    }
+                    
+                    downloadFile(file,name);
+                }, `image/${targetFileType}`);
+            };
+    
+            img.onerror = () => {
+                reject(new Error('Error loading the image.'));
+            };
+    
+            img.src = inputImageUrl;
+        });
+    };
+
+    const updateAndDownloadSelectedObj = (downloadArray) => {
+        const currentImgType = downloadArray[0].fileType;
+        const updateImgType = selectedFormat.format;
+        const perObjPercentage = 100 / downloadArray.length;
+        let startPercentage = 0;
+    
+        const updateProgressAndContinue = () => {
+            startPercentage += perObjPercentage;
+            updateProgress(startPercentage);
+        };
+    
+        if (currentImgType !== updateImgType) {
+            const convertedArray = downloadArray.map(obj => {
+                return convertAndDownloadImage(obj.fileUrl, updateImgType, obj.fileName)
+                    .then(() => {
+                        updateProgressAndContinue();
+                    })
+                    .catch(error => {
+                        console.error(`Error downloading ${obj.fileName}: ${error.message}`);
+                    });
+            });
+            Promise.all(convertedArray)
+                .then(() => {
+                    console.log('All downloads complete');
+                })
+                .catch(error => {
+                    console.error(`Error during conversion and download: ${error.message}`);
+                });
+        } else {
+            const downloadPromises = downloadArray.map(obj => {
+                const fileExtension = selectedFormat.format.toLowerCase();
+                const extension = obj.fileName.split(".").pop().toLowerCase();
+                    let name ;
+                    if(isValid(extension) === false){
+                        const parts = obj.fileName.split(".");
+                        const result = parts.join(".");
+                        name = result + "." + fileExtension;
+                    }else{
+                        name = obj.fileName
+                    }
+                return downloadFile(obj.file, name)
+                    .then(() => {
+                        updateProgressAndContinue();
+                    })
+                    .catch(error => {
+                        console.error(`Error downloading ${obj.fileName}: ${error.message}`);
+                    });
+            });
+    
+            Promise.all(downloadPromises)
+                .then(() => {
+                    console.log('All downloads complete');
+                })
+                .catch(error => {
+                    console.error(`Error during download: ${error.message}`);
+                });
+        }
     };
     
-    // // Example usage: download pages starting from page 1 in JPEG format
-    // convertPDFToImageFiles(1, 'jpeg');
-    
-    // const [selectedPage, setSelectedPage ] = useState(null);
+
+   
+
     const onPopupFunction = (e, obj) => {
         let name = e.target.name;
         let value = e.target.value;
         let prevItems = [...allPageArray];
         const divEl = document.getElementById("pagesDispalyScrollCon");
 
-        // const prevBoxEl = document.getElementById(`imageBox_${selectedPage}`);
-        // const boxEl = document.getElementById(`imageBox_${obj.pageNumber}`);
-
-        
-        // if(selectedPage != null && prevBoxEl){
-        //     prevBoxEl.style.display = "none";
-        // }
-
-        // setSelectedPage(obj.pageNumber);
 
         switch(name){
             case "format":
-                console.log(name);
-                setSelectedFormat((selectedFormat)=>({...selectedFormat, [name]: value}));
+                setSelectedFormat((selectedFormat) => ({ ...selectedFormat, [name]: value }));
+                setSelectedObjArray((selectedArray) =>
+                    selectedArray.map((each) => {
+                        if (each) {
+                            each["fileType"] = value;
+                            const fileNameWithoutExtension = each.fileName.split('.')[0];
+                            each.fileName = `${fileNameWithoutExtension}.${value.toLowerCase()}`;
+                        }
+                        return each;
+                    })
+                );
                 break;
             case "Download":
-                console.log(name);
+                updateAndDownloadSelectedObj(selectedObjArray);
                 break; 
             case "scrollLeft":
                 console.log(name);
@@ -187,13 +223,25 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
                 }
                 break; 
             case "rename":
-                console.log(name, obj);
-                break; 
-            case "edit":
-                console.log(name, obj);
+                setAllPageArray((selectedArray) =>
+                    selectedArray.map((each) => {
+                        if (each.pageNumber === obj.pageNumber) {
+                            each["fileName"] = value;
+                        }
+                        return each;
+                    })
+                );
                 break; 
             case "remove":
-                console.log(name, obj);
+                setSelectedObjArray((selectedArray) =>
+                    selectedArray.map((each) => {
+                        if (each.pageNumber === obj.pageNumber) {
+                        // Remove the "fileType" property for the matching element
+                        delete each["fileType"];
+                        }
+                        return each;
+                    })
+                    );
                 break; 
             case "box":
                 console.log(name, obj);
@@ -206,14 +254,19 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
 
 
     const onDownload = (identifier) => {
-        if(items.length > 0){
+        if(identifier === "A"){
+            let item = []
+            allPageArray.forEach((each)=>{
+                item.push(parseInt(each.pageNumber));
+            })
+            setItems(item);
             openModal("OPEN");
-        }
-        
-        if(identifier === "S"){
-            // convertPDFToImageFiles(fileUrl, conversionRequests, updateProgress);
         }else{
-            //All
+            if(items.length > 0){
+                openModal("OPEN");
+            }else{
+                // show some popup to select photo;
+            }
         }
     }
 
@@ -251,7 +304,8 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray}) => {
                     key="downloadBlock"
                     selectedFormat={selectedFormat} 
                     onPopupFunction={onPopupFunction}
-                    allPageArray={allPageArray}
+                    selectedObjArray={selectedObjArray}
+                    setSelectedObjArray = {setSelectedObjArray}
                     items={items}
                 />
             </div>
