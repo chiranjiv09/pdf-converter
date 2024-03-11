@@ -4,7 +4,7 @@ import '../home.css';
 const BasicSteps = () => {
     return (
         <div className="HomePageBottomCon">
-                <p className='HomePageBottomHeading'>How to Convert PDF to JPG</p>
+                <p className='HomePageBottomHeading'>How to Convert PDF to Image</p>
                 <div className="informationCardsCon">
                     <div className="informationCard">
                         <h2>01</h2>
