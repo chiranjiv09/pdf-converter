@@ -98,11 +98,6 @@ const HomePage = () => {
         }
     };
 
-    useEffect(()=>{
-        console.log(allPageArray);
-    },[allPageArray])
-      
-
     return (
         <div className="HomePageMainCon">
             <Header />
@@ -160,7 +155,7 @@ const HomePage = () => {
             {file !== undefined && file !== null && allPageArray.length != undefined && allPageArray.length > 0 ?
                 <UploadedBlock 
                 fileUrl={fileUrl} 
-                allPageArray={allPageArray} 
+                allPageArray={allPageArray.sort((a, b) => a.pageNumber - b.pageNumber)} 
                 setAllPageArray = {setAllPageArray}
                 onChangeFile={onChangeFile}
                 setLoadingStatus={setLoadingStatus}
