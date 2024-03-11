@@ -54,7 +54,7 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray, se
     
     const updateProgress = (percentage) => {
         console.log(`Download progress: ${percentage}%`);
-        setLoadingStatus(percentage);
+        setLoadingStatus(Math.ceil(percentage));
         if(percentage == 100){
             setAllPageArray([]);
             setItems([]);
@@ -286,7 +286,6 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray, se
           bottom: 'auto',
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
-          
         },
         overlay: {
             zIndex:"4",
@@ -357,7 +356,7 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray, se
                                     className='checkBox' 
                                     onChange={(e)=>onSelectItems(e)} 
                                     type='checkbox'
-                                    value={index+1}
+                                    value={eachPage.pageNumber}
                                     id={`checkBox_${index}`} 
                                     checked={items.includes(eachPage.pageNumber)}
                                 />
@@ -368,7 +367,7 @@ const UploadedBlock = ({fileUrl, onChangeFile, allPageArray ,setAllPageArray, se
                             </div>
                         )
                     })}  
-                    </div>             
+                </div>             
             </div>
         
     )
