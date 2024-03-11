@@ -5,6 +5,8 @@ import BasicSteps from './Steps';
 import UploadedBlock from './UploadedBlock';
 
 import fileImg from '../images/File.png';
+import fileFrame from '../images/Frame.png';
+
 
 const HomePage = () => {
     const [file, setFile] = useState(null);
@@ -114,7 +116,7 @@ const HomePage = () => {
                     style={{display: 'none'}}
                     onClick={(e)=>e.target.value = ""}
                 />
-                <img src={""} className="HomePageSideImgs" alt="side Imgs" />
+                <img src={fileFrame} className="HomePageSideImgs" alt="side Imgs" />
                 <div className="HomePageTopMiddleCon">
                     <div className="logoImagebox">
                         <img src={fileImg} className="logoImage" alt="side Imgs" />
@@ -154,7 +156,7 @@ const HomePage = () => {
                   }
 
                 </div>
-                <img src="" className="HomePageSideImgs" alt="side Imgs" />
+                <img src={fileFrame} className="HomePageSideImgs" alt="side Imgs" />
             </div>
             
             {file !== undefined && file !== null && allPageArray.length != undefined && allPageArray.length > 0 ?

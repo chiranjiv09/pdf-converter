@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import './App.css';
+import './home.css';
 
 import LandingPage from './components/LandingPage';
 import HomePage from './components/HomePage';
@@ -12,7 +13,7 @@ function App() {
   useEffect(()=>{
     setTimeout(()=>{
       setPageChange(false)
-    }, 1000);
+    }, 1500);
   },[]);
 
   return (
